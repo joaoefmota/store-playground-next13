@@ -1,18 +1,16 @@
 "use client";
+import { useReviews } from "@/app/context/ReviewContext";
 import { Review } from "@/app/types";
 import React, { FunctionComponent, useState } from "react";
 
 interface ReviewsProps {
-  reviews: Review[];
   addReviewAction: (rating: number, text: string) => Promise<Review[]>;
 }
 
-const Reviews: FunctionComponent<ReviewsProps> = ({
-  reviews,
-  addReviewAction,
-}) => {
+const Reviews: FunctionComponent<ReviewsProps> = ({ addReviewAction }) => {
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(5);
+  const [reviews, setReviews] = useReviews();
 
   return (
     <>
@@ -29,7 +27,7 @@ const Reviews: FunctionComponent<ReviewsProps> = ({
       <form
         onSubmit={async (evt) => {
           evt.preventDefault();
-          await addReviewAction(reviewRating, reviewText);
+          setReviews(await addReviewAction(reviewRating, reviewText));
           setReviewText("");
           setReviewRating(5);
         }}

@@ -1,13 +1,11 @@
 "use client";
 
+import { useReviews } from "@/app/context/ReviewContext";
 import { Review } from "@/app/types";
 import { FunctionComponent } from "react";
 
-interface AverageRatingProps {
-  reviews: Review[];
-}
-
-const AverageRating: FunctionComponent<AverageRatingProps> = ({ reviews }) => {
+const AverageRating: FunctionComponent = () => {
+  const [reviews] = useReviews();
   return (
     <>
       {reviews && reviews?.length && (
