@@ -1,22 +1,25 @@
 export interface Review {
+  user_id: number;
   rating: number;
-  text: string;
+  comment: string;
 }
 
 export interface Product {
-  id: number;
-  image: string;
+  product_id: number;
   name: string;
-  price: number;
   description: string;
-  reviews: Review[];
+  price: number;
+  unit: number;
+  image: string;
+  discount: number;
+  availability: boolean;
+  brand: string;
+  category: string;
+  rating: number;
+  reviews: [{ user_id: number; rating: number; comment: string }];
 }
-
 export interface Cart {
-  products: {
-    id: number;
-    name: string;
-    image: string;
-    price: number;
-  }[];
+  cart_id: number;
+  user_id: number;
+  items: { product_id: number; quantity: number }[];
 }
