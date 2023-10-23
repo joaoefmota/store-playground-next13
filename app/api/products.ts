@@ -1,18 +1,17 @@
 import { Product, Review } from "../types";
 
-export const fetchProducts = async () => {
-  try {
-    const response = await fetch(
-      "https://fake-store-api.mock.beeceptor.com/api/products"
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const getProducts = async (): Promise<Product[]> => {
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(
+        "https://fake-store-api.mock.beeceptor.com/api/products"
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return await fetchProducts();
 };
 

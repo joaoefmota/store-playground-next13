@@ -1,28 +1,64 @@
 import { Cart } from "../types";
 import { getProductById } from "./products";
 
-const cart: Cart = {
-  cart_id: 1,
-  user_id: 1,
-  items: [],
-};
-
 export const getCart = async (): Promise<Cart> => {
-  return cart;
+  const fetchCart = async () => {
+    try {
+      const response = await fetch(
+        "https://fake-store-api.mock.beeceptor.com/api/carts"
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return await fetchCart();
 };
 
 export const addToCart = async (productId: number): Promise<Cart> => {
   const product = await getProductById(productId);
-  if (product) {
-    cart.items.push({
-      product_id: product.product_id,
-      quantity: 1,
-    });
+  if (!product) {
+    throw new Error("Product not found");
   }
-  return cart;
+  try {
+    const response = await fetch(
+      "https://fake-store-api.mock.beeceptor.com/api/carts",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          product_id: productId,
+          quantity: 1,
+        }),
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return getCart();
 };
 
-export const clearCart = async (): Promise<Cart> => {
-  cart.items = [];
-  return cart;
+export const removeFromCart = async (productId: number): Promise<Cart> => {
+  try {
+    const response = await fetch(
+      "https://fake-store-api.mock.beeceptor.com/api/carts",
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          product_id: productId,
+        }),
+      }
+    );
+    return response.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return getCart();
 };
