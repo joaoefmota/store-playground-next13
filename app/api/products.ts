@@ -3,9 +3,7 @@ import { Product, Review } from "../types";
 export const getProducts = async (): Promise<Product[]> => {
   const fetchProducts = async () => {
     try {
-      const response = await fetch(
-        "https://fake-store-api.mock.beeceptor.com/api/products"
-      );
+      const response = await fetch("https://fakestoreapi.com/products");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -15,23 +13,32 @@ export const getProducts = async (): Promise<Product[]> => {
   return await fetchProducts();
 };
 
+export const getProductById = async (
+  id: number
+): Promise<Product | undefined> => {
+  const fetchProduct = async () => {
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return await fetchProduct();
+};
+
 export const addReview = async (
   id: number,
   review: {
-    user_id: number;
-    rating: number;
-    comment: string;
-    text: string;
+    rate: number;
+    count: number;
   }
 ): Promise<Review[] | undefined> => {
   const product = await getProductById(id);
   if (product) {
-    product.reviews.push(review);
+    product.rating.push(review);
   }
-  return product?.reviews;
+  return product?.rating;
 };
 
-export const getProductById = async (
-  id: number
-): Promise<Product | undefined> =>
-  getProducts().then((products) => products.find((p) => p.product_id === id));
